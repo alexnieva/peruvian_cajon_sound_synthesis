@@ -48,20 +48,24 @@
 <h1>
 <a id="sound-synthesis-approach" class="anchor" href="#sound-synthesis-approach" aria-hidden="true"><span class="octicon octicon-link"></span></a>Sound Synthesis Approach.</h1>
 
-<p>Based on the geometry of the Cajon drum, synthesis can be tackled through several different methods. We can work with a lumped parameter model based on the acousto-mechanic properties of the system [1]. This will allow us to generate an equivalent electrical circuit that can be discretized and solved in the digital domain using the Laplace transform and its mapping into the Z plane. Another approach would be to use a Digital Waveguide mesh in 2 and 3 dimensions defining a 2D mesh for the front plate, and a 3D mesh for the volume of air inside the drum [2, 3]. In addition, we have to consider the boundary conditions depending on the stiffness and materials of the drum. The first attempt to model the 3D mesh is written in the following Matlab script. See it <a href="alexnieva.github.io/mesh3d_cajon_drum.m">here</a>.</p>
+<p>Based on the geometry of the Cajon drum, synthesis can be tackled through several different methods. We can work with a lumped parameter model based on the acousto-mechanic properties of the system [1]. This will allow us to generate an equivalent electrical circuit that can be discretized and solved in the digital domain using the Laplace transform and its mapping into the Z plane.</p>
 
-<p>The technique chosen as a first attempt to synthesize the Cajon drum sounds is based on modal analysis and coupled mode synthesis [4, 5]. The geometry of the drum is basically that of a Helmholtz resonator with a vibrating plate as the excitation of the system. The resonant frequency of a Helmholtz resonator is given by the expression:</p>
+<p>Another approach would be to use a Digital Waveguide mesh in 2 and 3 dimensions defining a 2D mesh for the front plate, and a 3D mesh for the volume of air inside the drum [2, 3]. In addition, we have to consider the boundary conditions depending on the stiffness and materials of the drum. The first attempt to model the 3D mesh is written in the following Matlab script. See it <a href="alexnieva.github.io/mesh3d_cajon_drum.m">here</a>.</p>
+
+<p>The technique chosen to synthesize the Cajon drum sounds is based on modal analysis and coupled mode synthesis [4, 5]. The geometry of the drum is basically that of a Helmholtz resonator with a vibrating plate as the excitation of the system. The resonant frequency of a Helmholtz resonator is given by the expression:</p>
 
 <p><img src="images/freshelmholtz.png" alt="Resonance Frequency"></p>
 
-<p>where v is the speed of sound, A is the area of the duct, Vo is the volume of the box and Leq is the equivalent length of the duct.</p>
+<p>where v is the speed of sound, A is the area of the duct, Vo is the volume of the box and Leq is the equivalent length of the duct. For a Cajon drum of this size, the approximate resonant frequency is around 60Hz to 100Hz depending on the diameter of the back hole and its apparent length.</p>
 
-<p>The frequency response measured in [1] for the transfer function is: </p>
+<p>It is important to point out that there are several ways to strum the Cajon, but the two most popular ones are to strum it in the middle of the front plate with the hand making the shape of a spoon, and to strum it at the upper edge just with the fingers. This is important in the generation of different pitched sounds.</p>
+
+<p>The frequency response measured in [1] for the transfer function is (force vs. pressure at the front plate using an excitation hammer): </p>
 
 <p><img src="images/freq_response.gif" alt="Frequency response"></p>
 
 
-<p>The sound pressure level at the hole in the back plate is:</p>
+<p>The sound pressure level at the hole in the back plate is according to [1]:</p>
 
 <p><img src="images/spl_cajon.gif" alt="Sound Pressure Level"></p>
 
@@ -70,26 +74,73 @@
 
 <p><img src="images/diffeq.gif" alt="Resonance Frequency"></p>
 
-<p>In our case we are going to make use of three second order digital filters to match the vibrating modes of the plate and the resonant mode of the Helmholtz resonator. The values of the complex poles depend on the bandwidth B and resonant frequency of each of them. For the Cajon drum, depending on its size and hole diameter, the first resonance frequency is around 90Hz. Also the first resonant mode of the front face is around 200 Hz depending on the size. These two modes are the most important in the generation of the most characteristic sound of the Cajon drum which is when it is strummed in the center of the front plate. </p>
+<p>In our case we are going to make use of Five second order digital filters to match the resonant frequency of the Helmholtz resonator and the vibrating modes of the plate. The values of the complex poles depend on the bandwidth B and resonant frequency of each of them. For the Cajon drum, depending on its size and hole diameter, the first resonance frequency is around 90Hz. According to sound pressure measurements there are also frequency components in the 100Hz to 200Hz range that can be attributed to harmonics of this fundamental frequency. Also the first resonant mode of the front plate is around 360 Hz and 574Hz depending on its size [6]. According to the analysis performed in this project, the sound generated by the Cajon drum has an important component from its behaviour as a Helmholtz resonator, but also has mid-range frequency content in the 2KHz range where the attack of the hand strum is mostly perceived. This is important to get a more realistic synthesized sound.</p>
 
-<p>The simulation was implemented in Matlab (code in the repository of this project) and the following audio files were generated:</p>
+<h1>
+<a id="synthesized-sounds" class="anchor" href="#synthesized-sounds" aria-hidden="true"><span class="octicon octicon-link"></span></a>Synthesized Sounds.</h1>
+
+<p>The sound synthesis code was implemented in Matlab (<a href="alexnieva.github.io/reson_cajon_alexnieva.m">script</a> in the repository of this project). The impulse response of the second order digital filters and the following synthesized audio files were generated:</p>
 
 <p><img src="images/fresp_filters.png" alt="Resonances of filters"></p>
 
-<p>Synthesized sound with 1 resonance - wave file</p>
 
+<h3>Low Frequency Hit</h3>
+
+<p>Input to the system. Recorded damped hand strum at center of the front plate - wave file</p>
 <audio controls>
-  <source src="cajon1.wav" type="audio/mpeg">
+  <source src="CAJON_SAMPLE1.wav" type="audio/mpeg">
   Your browser does not support the audio element.
 </audio>
 
-<p>Synthesized sound with 3 resonances - wave file</p>
+<p>Synthesized sound box as a Helmholtz resonator only - wave file</p>
+
 <audio controls>
-  <source src="cajon2.wav" type="audio/mpeg">
+  <source src="CAJON_AS_HELM_RES.wav" type="audio/mpeg">
   Your browser does not support the audio element.
 </audio>
 
-<p>Real sounds of the Cajon drum can be listened here:</p>
+<p>Synthesized sound of box resonances - wave file</p>
+<audio controls>
+  <source src="CAJON_BOX.wav" type="audio/mpeg">
+  Your browser does not support the audio element.
+</audio>
+
+<p>Synthesized sound of Cajon drum including plate resonances, low frequency hit - wave file</p>
+<audio controls>
+  <source src="CAJON_LOW.wav" type="audio/mpeg">
+  Your browser does not support the audio element.
+</audio>
+
+
+<p><h3>High Frequency Hit</h3></p>
+
+<p>Input to the system. Recorded damped hand strum at edge of the front plate - wave file</p>
+<audio controls>
+  <source src="CAJON_SAMPLE3.wav" type="audio/mpeg">
+  Your browser does not support the audio element.
+</audio>
+
+<p>Synthesized sound box as a Helmholtz resonator only - high pitch hit - wave file</p>
+
+<audio controls>
+  <source src="CAJON_AS_HELM_RES_HIGH.wav" type="audio/mpeg">
+  Your browser does not support the audio element.
+</audio>
+
+<p>Synthesized sound of box resonances - high pitch hit - wave file</p>
+<audio controls>
+  <source src="CAJON_BOX_HIGH.wav" type="audio/mpeg">
+  Your browser does not support the audio element.
+</audio>
+
+<p>Synthesized sound of Cajon drum including plate resonances, high pitch hit - wave file</p>
+<audio controls>
+  <source src="CAJON_HIGH.wav" type="audio/mpeg">
+  Your browser does not support the audio element.
+</audio>
+
+<p>
+<h3>Real sounds of the Cajon drum can be listened here:</h3></p>
 
 <p>Cajon drum sound with snares - wave file</p>
 <audio controls>
@@ -97,20 +148,29 @@
   Your browser does not support the audio element.
 </audio>
 
-<p>Cajon drum sound - wave file</p>
+<p>Cajon drum sound low pitch- wave file</p>
 <audio controls>
-  <source src="CAJON_SAMPLE_REAL1.wav" type="audio/mpeg">
+  <source src="CAJON_SAMPLE_SUSANABACA3low.wav" type="audio/mpeg">
   Your browser does not support the audio element.
 </audio>
 
-<p>In order to obtain an excitation signal for the resonant filters, we made dry measurements of the damped (filled with absorptive material) cajon drum using a condenser microphone (Audio Technica AT2020 fairly flat frequency response). Unfortunately, this Cajon drum had snares. A better excitation signal would have to be recorded using a Cajon drum without those additions.</p>
+<p>Cajon drum sound high pitch- wave file</p>
+<audio controls>
+  <source src="CAJON_SAMPLE_SUSANABACA2high.wav" type="audio/mpeg">
+  Your browser does not support the audio element.
+</audio>
+
+
+<p>In order to obtain an excitation signal for the resonant filters, we made dry measurements of the damped (filled with absorptive material) Cajon drum using a condenser microphone (Audio Technica AT2020 - fairly flat frequency response). Unfortunately, the Cajon drum used for these measurements had snares. A better excitation signal would have to be recorded using a Cajon drum without those additions, a controlled environment, and calibrated microphones.</p>
 
 <h1>
 <a id="discussion" class="anchor" href="#discussion" aria-hidden="true"><span class="octicon octicon-link"></span></a>Discussion</h1>
 
-<p>The attempt to recreate the sounds generated by the drum sound was in part successful due to the simple geometry of the instrument. Nevertheless, there is still room to improve this sound synthesis engine and this study. There were difficulties throughout the study, such as obtaining accurate values for the poles of the digital filters. This was done based on the graphs presented in the references, but it is necessary perform measurements for each instrument to obtain the corresponding parameters because the change of size, shape, type of wood of the drum changes the resonance frequencies to an extent that makes the current model not accurate. </p>
+<p>The attempt to recreate the sounds generated by the drum sound was in part successful due to the simple geometry of the instrument. Nevertheless, there is still room to improve this sound synthesis engine and this study. There were difficulties throughout the study, such as obtaining accurate values for the poles of the digital filters. This was done based on the graphs presented in the references and our measurements and analysis based on the fourier transforms of the obtained signals. It is necessary to perform measurements for each instrument to obtain the corresponding parameters because the change of size, shape, type of wood of the drum change the resonance frequencies to an extent that makes the current model not accurate. </p>
 
-<p>The matching of the resonant filters was done manually approximating their bandwidths and calculating the resonant frequency of the Cajon drum used in this project. </p>
+<p>The matching of the resonant filters was done manually approximating their bandwidths and calculating the resonant frequency of the Cajon drum used in this project.</p>
+
+<p>Our study and synthesized sounds obtained suggest that the low frequency behaviour of the Cajon drum is well understood but there are mid-range and high frequency components that influence the overall percussive attack and brightness of the Cajon drum timbre that need to be addressed in future studies.</p>
 
 <h1>
 <a id="references" class="anchor" href="#references" aria-hidden="true"><span class="octicon octicon-link"></span></a>References</h1>
@@ -124,6 +184,8 @@
 <p>[4] P. R. Cook. "Physically informed sonic modeling (phism): Synthesis of percussive sounds". Computer Music Journal, 21 (3): 38-49, 1997. </p>
 
 <p>[5] Scott A. Van Duyne, "Coupled Mode Synthesis". Center for Computer Research in Music and Acoustics, Stanford University. <a href="https://ccrma.stanford.edu/files/papers/stanm101.pdf#page=42">Paper download</a></p>
+
+<p>[6] L. E. Kinsler. "Fundamentals of Acoustics". p. 82, New York, Wiley, 3rd Edition, 1982. </p>
       </section>
     </div>
     <footer>
