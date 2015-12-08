@@ -17,7 +17,7 @@
   <body>
     <div class="wrapper">
       <header>
-        <h1>Drum Cajon Analysis and Sound Synthesis</h1>
+        <h1>Cajon Drum Analysis and Sound Synthesis</h1>
         <p>alexnieva.GitHub.io</p>
         <p class="view"><a href="https://github.com/alexnieva">View the Project on GitHub <small>alexnieva</small></a></p>
         <ul>
@@ -48,7 +48,7 @@
 <h1>
 <a id="sound-synthesis-approach" class="anchor" href="#sound-synthesis-approach" aria-hidden="true"><span class="octicon octicon-link"></span></a>Sound Synthesis Approach.</h1>
 
-<p>Based on the geometry of the cajon drum, the problem can be tackled from different methods. We can work with a lumped parameters model based on the acousto-mechanic propierties of the system [1]. This will allow us to generate an equivalent electrical circuit that can be discretized and solved in the digital domain using the Laplace transform and its mapping into the Z plane. Another approach would be to use a Digital Waveguide mesh in 2 and 3 dimensions defining a 2D mesh for the front plate, and a 3D mesh for the volume of air inside the drum [2,3]. In addition, we have to consider the boundary conditions depending on the stiffness and materials of the drum.</p>
+<p>Based on the geometry of the cajon drum, the problem can be tackled from different methods. We can work with a lumped parameters model based on the acousto-mechanic propierties of the system [1]. This will allow us to generate an equivalent electrical circuit that can be discretized and solved in the digital domain using the Laplace transform and its mapping into the Z plane. Another approach would be to use a Digital Waveguide mesh in 2 and 3 dimensions defining a 2D mesh for the front plate, and a 3D mesh for the volume of air inside the drum [2,3]. In addition, we have to consider the boundary conditions depending on the stiffness and materials of the drum. The first attempt to model the 3D mesh is written in the following Matlab script. See it <a href="alexnieva.github.io/mesh3d_cajon_drum.m">here</a> </p>
 
 <p>The technique chosen as a first atempt to synthesize the cajon drum sounds is based on modal analysis and coupled mode synthesis [4,5]. The geometry of the drum is basically that of a helmholtz resonator with a vibrating plate as the excitation of the system. The resonant frequency of a helmholtz resonator is given by the expression:</p>
 
