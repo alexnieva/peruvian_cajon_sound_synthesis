@@ -1,0 +1,8 @@
+title: Drum Cajon Analysis and Sound Synthesis
+description: alexnieva.GitHub.io
+google_analytics: 
+show_downloads: true
+theme: jekyll-theme-modernist
+
+gems:
+  - jekyll-mentions
